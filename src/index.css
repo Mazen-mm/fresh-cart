@@ -15,8 +15,12 @@
 body{
     font-family: var(--font-family) !important;
 }
-.brd-main{
-  border: solid 1px ;
+.cart-num {
+  color: white;
+  background-color: #FF3D00;
+  font-size: small;
+  padding: 0px 5px;
+  border-radius: 50% 50%;
 }
 .network{
   color: white;
@@ -37,44 +41,36 @@ body{
 {
     color: var(--rating-color);
 }
-.cursor-pointer
-{
+.cursor-pointer{
     cursor: pointer;
 }
 a , a:hover{
     color: black;
     text-decoration: none;
 }
-.product:hover
-{
+.product:hover{
     box-shadow: var(--shadow);
     border: solid 1px var(--main-color);
 }
-.product .btn 
-{
-    transition: transform 1s , opacity 1s;
-    transform: translateY(100%);
-    opacity: 0;
+.product .btn {
+  transition: transform 1s , opacity 1s;
+  transform: translateY(100%);
+  opacity: 0;
 }
-.product:hover .btn 
-{
+.product:hover .btn {
     opacity: 1;
     transform: translateY(0%);
 }
-.font-sm
-{
+.font-sm{
     font-size: 14px;
 }
-.text-main
-{
+.text-main{
     color: var(--main-color);
 }
-.bg-main
-{
+.bg-main{
     background-color: var(--main-color) !important;
 }
-.bg-main-light 
-{
+.bg-main-light {
     background-color: var(--light-color) !important;
 }
 .loading{

@@ -1,14 +1,16 @@
-import { Helmet } from 'react-helmet';
 import HomeProduct from '../HomeProduct/HomeProduct';
 import HomeSlider from '../HomeSlider/HomeSlider';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 export default function Home () {
-  
+
   return <>
-  <Helmet>
-    <title>Fresh Cart</title>
-  </Helmet>
-  <HomeSlider/>
-  <HomeProduct/>
+  <HelmetProvider>
+    <Helmet>
+      <title>Fresh Cart</title>
+    </Helmet>
+    <HomeSlider/>
+    <HomeProduct/>
+  </HelmetProvider>
   </>
 }

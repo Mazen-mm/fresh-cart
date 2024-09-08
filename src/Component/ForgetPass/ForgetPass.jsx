@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import * as Yup from 'yup'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 export default function ForgetPass () {
 let navReset = useNavigate()
@@ -42,7 +42,6 @@ let validationSchema2 = Yup.object({
   if (req.data.statusMsg === 'success') {
     setFormStatus(false)
   }
-  console.log(req); 
 }
 
   async function verifyResetCode (value) {
@@ -50,7 +49,6 @@ let validationSchema2 = Yup.object({
     .catch(  (errorr) => {
       setErr(errorr.response.data.message)
     })
-    console.log(req);
     if(req.data.status === 'Success' ){
       navReset('/resetPass')
     }
@@ -58,6 +56,7 @@ let validationSchema2 = Yup.object({
 
   return <>
   <div className='my-5 w-50 m-auto'>
+    <HelmetProvider>
     <Helmet>
       <title>Forget Password</title>
     </Helmet>
@@ -85,6 +84,7 @@ let validationSchema2 = Yup.object({
       </div>
     </form>
     }
+    </HelmetProvider>
   </div>
   </>
 }

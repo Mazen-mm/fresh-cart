@@ -6,8 +6,27 @@ import { cartContext } from '../../Context/cartContext';
 import Swal from 'sweetalert2';
 
 export default function HomeProduct () {
+  let {addToCart , setNumOfCartItems , addToWish , setNumOfWishItems} = useContext(cartContext);
 
-  let {addToCart , setNumCart} = useContext(cartContext);
+  async function addProductToWish (id) {
+    let req = await addToWish(id).catch( (error) => {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+        footer: '<a href="#">Why do I have this issue?</a>'
+      });
+    })
+    if(req?.data?.status === 'success') {
+      setNumOfWishItems(req.data.numOfWishItems)
+      Swal.fire({
+        title: "Good job!",
+        text: "Product added successfully to your wish list",
+        icon: "success"
+      });
+    }
+  };
+
   async function addProductToCart (id) {
     let req = await addToCart(id).catch( (error) => {
       Swal.fire({
@@ -17,16 +36,15 @@ export default function HomeProduct () {
         footer: '<a href="#">Why do I have this issue?</a>'
       });
     })
-    if(req.data.status === 'success') {
-      setNumCart(req.data.numOfCartItems)
+    if(req?.data?.status === 'success') {
+      setNumOfCartItems(req.data.numOfCartItems)
       Swal.fire({
         title: "Good job!",
         text: "Product added successfully to your cart",
         icon: "success"
       });
     }
-    console.log(req);
-  }
+  };
 
   let [page , setPage] = useState(1)
   function getPageNumber (event){
@@ -37,7 +55,7 @@ export default function HomeProduct () {
   function getProducts (queryData) {
     return axios.get(`https://ecommerce.routemisr.com/api/v1/Products/?page=${queryData.queryKey[1]}`)
   }
-  let { isLoading , isError , isFetching , data } = useQuery(['productsApi' , page] , getProducts , {
+  let { isLoading , data } = useQuery(['productsApi' , page] , getProducts , {
     // cacheTime : 3000 ,
     // refetchOnMount : false ,
     // staleTime : 3000 ,
@@ -50,20 +68,23 @@ export default function HomeProduct () {
       <span className="loader"></span>
     </div> :
     <div className='container my-5 m-auto'>
-    <h2 className='text-center mb-3'>All Products</h2>
-    <div className='row g-5'>
-      {data?.data.data.map( (element) => {
-        return   <div key={element.id} className='col-md-2 product'>
-          <Link to={`/productdetails/${element.id}`}>
+      <h2 className='text-center mb-3'>All Products</h2>
+      <h4 className='text-center px-5 text-black'><i className="fa-solid fa-ellipsis fa-2xl"></i></h4>
+      <div className='row g-3'>
+        {data?.data.data.map( (element) => {
+          return <div key={element.id} className='col-md-2 product position-relative'>
+            <Link to={`/productdetails/${element.id}`}>
               <img className='w-100' src={element.imageCover} alt="" />
-              <h6 className='text-main'>{element.category.name}</h6>
-              <h5>{element.title.split(' ').slice(0,2).join(' ')}</h5>
+              <h6 className='text-main mt-2'>{element.category.name}</h6>
+              <h6>{element.title.split(' ').slice(0,2).join(' ')}</h6>
               <div className='d-flex justify-content-between'>
                 <span>{element.price}EGP</span>
                 <span>{element.ratingsAverage}<i className='fa-solid fa-star rating-color'></i></span>
               </div>
-          </Link>
-          <button onClick={()=> addProductToCart(element.id)} className='btn bg-main text-white d-block w-100'>Add Product</button>
+            </Link>
+          <i onClick={()=> addProductToWish(element.id)}
+            className='fa-regular fa-heart fa-2x position-absolute text-danger top-0 end-0 m-2'></i>
+          <button onClick={()=> addProductToCart(element.id)} className='btn bg-main text-white w-100'>Add Product</button>
         </div>
       }
       )}
@@ -71,12 +92,12 @@ export default function HomeProduct () {
     <nav aria-label="Page navigation example">
       <ul className="pagination justify-content-center my-5">
         <li className="page-item">
-          <a className="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+          <Link className="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></Link>
         </li>
-        <li className="page-item cursor-pointer"><a className="page-link" pagenum='1' onClick={getPageNumber} >1</a></li>
-        <li className="page-item cursor-pointer"><a className="page-link" pagenum='2' onClick={getPageNumber} >2</a></li>
+        <li className="page-item cursor-pointer"><Link className="page-link" pagenum='1' onClick={getPageNumber} >1</Link></li>
+        <li className="page-item cursor-pointer"><Link className="page-link" pagenum='2' onClick={getPageNumber} >2</Link></li>
         <li className="page-item">
-          <a className="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+          <Link className="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></Link>
         </li>
       </ul>
     </nav>

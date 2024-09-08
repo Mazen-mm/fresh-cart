@@ -11,17 +11,25 @@ export default function HomeSlider() {
   useEffect(() => {
     getCategories()
   } , [])
-  let [categoryList , setCategory] = useState([])
+  let [categoryList , setCategory] = useState([]);
   async function getCategories () {
-    let req = await axios.get('https://ecommerce.routemisr.com/api/v1/categories')
-    setCategory(req.data.data)
+    let {data} = await axios.get('https://ecommerce.routemisr.com/api/v1/categories')
+    setCategory(data.data)
   }
+  console.error = (function(error) {
+    return function(...args) {
+      if (typeof args[0] === 'string' && args[0].includes('UNSAFE_componentWillReceiveProps')) {
+        return;
+      }
+      error.apply(console, args);
+    };
+  })(console.error);
 
   return <>
   <div className="first-slider mt-4">
     <div className="row g-0">
       <div className="col-md-9">
-        <OwlCarousel className='owl-theme' items={1} loop autoplay autoplayTimeout={2000} margin={10}>
+        <OwlCarousel className='owl-theme' items={1} loop autoplay autoplayTimeout={2000}>
           <div className='item'>
             <img className='w-100' src={img1} height={400} alt="" />
           </div>
@@ -42,7 +50,7 @@ export default function HomeSlider() {
 
   <div className="second-slider mt-4">
     <h3 className='mb-3'>Shop Popular Categories</h3>
-    <OwlCarousel className='owl-theme' items={7} loop autoplay autoplayTimeout={2000} margin={10}>
+    <OwlCarousel className='owl-theme' items={7} loop autoplay autoplayTimeout={2000}>
       {categoryList.map( (element , index ) => {
         return <div className='item' key={index}>
         <img className='w-100' src={element.image} height={180} alt="" />

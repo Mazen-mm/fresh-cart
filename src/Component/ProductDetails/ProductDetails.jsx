@@ -4,13 +4,13 @@ import { useParams } from 'react-router-dom'
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
-import { Helmet } from 'react-helmet';
 import { useContext } from 'react';
 import { cartContext } from '../../Context/cartContext';
 import Swal from 'sweetalert2';
+import { Helmet , HelmetProvider } from 'react-helmet-async';
 
 export default function ProductDetails() {
-  let {addToCart , setNumCart} = useContext(cartContext);
+  let {addToCart , setNumOfCartItems} = useContext(cartContext);
   async function addCart (id) {
     let req = await addToCart(id).catch( (error) => {
       Swal.fire({
@@ -26,7 +26,7 @@ export default function ProductDetails() {
         text: "Product added successfully to your cart",
         icon: "success"
       });
-      setNumCart(req.data.numOfCartItems)
+      setNumOfCartItems(req.data.numOfCartItems)
     }
   }
   let params = useParams ();
@@ -36,12 +36,23 @@ export default function ProductDetails() {
     enabled : !!params.id
   });
 
+  console.error = (function(error) {
+    return function(...args) {
+      if (typeof args[0] === 'string' && args[0].includes('UNSAFE_componentWillReceiveProps')) {
+        return;
+      }
+      error.apply(console, args);
+    };
+  })(console.error);
+
   return <>
-  {data?.data.data ?  <div className="row align-items-center">
+  <HelmetProvider>
+  {data?.data.data ? <div className="row align-items-center">
     <Helmet>
       <title>{data?.data.data.title}</title>
     </Helmet>
-    <h1 className='text-center my-5'>Product Details</h1>
+    <h1 className='text-center mt-5'>Product Details</h1>
+    <h4 className='text-center px-5 text-black'><i className="fa-solid fa-ellipsis fa-2xl"></i></h4>
     <div className="col-md-4">
         <OwlCarousel className='owl-theme' items={1} autoplay autoplayTimeout={10000}>
           {data?.data.data.images.map((image , index) => (
@@ -63,5 +74,6 @@ export default function ProductDetails() {
       <button onClick={ ()=> addCart(params.id)} className='btn bg-main text-white w-100 mt-3'>Add To Cart</button>
     </div>
   </div> : ''}
+  </HelmetProvider>
   </>
 }

@@ -17,8 +17,12 @@ import ResetPass from './Component/ResetPass/ResetPass';
 import Footer from './Component/Footer/Footer';
 import GuardRouting from './Component/GuardRouting/GuardRouting';
 import { UserContextProvider } from './Context/userContext';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import { CartContextProvider } from './Context/cartContext';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import Profile from './Component/Profile/Profile';
+import CheckOut from './Component/CheckOut/CheckOut';
+import AllOrders from './Component/AllOrders/AllOrders';
+
 
 export default function App() {
   let QueryClients = new QueryClient()
@@ -27,12 +31,15 @@ export default function App() {
       path:'/', element:<Layout/>, children:[
         { index: true , element: <GuardRouting><Home/></GuardRouting>},
         { path:'homeProduct' , element: <GuardRouting><HomeProduct/></GuardRouting>},
+        { path:'profile' , element: <GuardRouting><Profile/></GuardRouting>},
         { path:'cart' , element: <GuardRouting><Cart/></GuardRouting>},
+        { path:'checkout/:id' , element: <GuardRouting><CheckOut/></GuardRouting>},
         { path:'products' , element: <GuardRouting><Products/></GuardRouting>},
         { path:'productdetails/:id' , element: <GuardRouting><ProductDetails/></GuardRouting>},
         { path:'brands' , element: <GuardRouting><Brands/></GuardRouting>},
         { path:'wishlist' , element: <GuardRouting><Wishlist/></GuardRouting>},
         { path:'categories' , element: <GuardRouting><Categories/></GuardRouting>},
+        { path:'allorders' , element: <GuardRouting><AllOrders/></GuardRouting>},
         { path:'navbar' , element: <Navbar/>},
         { path:"*" , element: <NotFound/>},
         { path:'register' , element: <Register/>},
@@ -44,12 +51,12 @@ export default function App() {
     }
   ])
   return <>
-      <QueryClientProvider client={QueryClients}>
-        <CartContextProvider>
-          <UserContextProvider>
-            <RouterProvider router={Routes}></RouterProvider>
-          </UserContextProvider>
-        </CartContextProvider>
-      </QueryClientProvider>
+    <QueryClientProvider client={QueryClients}>
+      <CartContextProvider>
+        <UserContextProvider>
+          <RouterProvider router={Routes}></RouterProvider>
+        </UserContextProvider>
+      </CartContextProvider>
+    </QueryClientProvider>
   </>
 }

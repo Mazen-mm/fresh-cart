@@ -3,7 +3,8 @@ import React, { useState } from 'react'
 import * as Yup from 'yup'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
+
 export default function Register() {
 let navg = useNavigate()
 let [errMsg,setErr] = useState('')
@@ -44,12 +45,13 @@ let validationSchema = Yup.object({
     navg('/login')
   }
   console.log(req);
-}
-let handleLogIn = () => {
-  navg('/login');
-};
+  }
+  let handleLogIn = () => {
+    navg('/login');
+  };
 
-  return (
+  return <>
+  <HelmetProvider>
   <div className='my-5 w-50 m-auto'>
     <Helmet>
       <title>Fresh Cart Register</title>
@@ -64,28 +66,24 @@ let handleLogIn = () => {
       
       {(formik.errors.name && formik.touched.name) ? <div className='alert alert-danger'>{formik.errors.name}</div> : '' }
       </div>
-
       <div className='my-2'>
         <label htmlFor="email">Email : </label>
         <input onBlur={formik.handleBlur} onChange={formik.handleChange} className='form-control mb-3' type="email"
         name='email' id='email'/>
         {(formik.errors.email && formik.touched.email) ? <div className='alert alert-danger'>{formik.errors.email}</div> : '' }
       </div>
-
       <div className='my-2'>
         <label htmlFor="password">Password : </label>
         <input onBlur={formik.handleBlur} onChange={formik.handleChange} className='form-control mb-3' 
         type="password" name='password'  id='password' />
         {(formik.errors.password && formik.touched.password) ? <div className='alert alert-danger'>{formik.errors.password}</div> : '' }
       </div>
-      
       <div className='my-2'>
         <label htmlFor="rePassword">rePassword : </label>
         <input onBlur={formik.handleBlur} onChange={formik.handleChange} className='form-control mb-3' 
         type="password" name='rePassword' id='rePassword' />
         {(formik.errors.rePassword && formik.touched.rePassword) ? <div className='alert alert-danger'>{formik.errors.rePassword}</div> : '' }
-      </div>
-      
+      </div>      
       <div className='my-2'>
         <label htmlFor="phone">Phone : </label>
         <input onBlur={formik.handleBlur} onChange={formik.handleChange} className='form-control mb-3' type="tel" name='phone' id='phone'/>
@@ -95,13 +93,11 @@ let handleLogIn = () => {
       {loading ? <button disabled={!(formik.isValid && formik.dirty)} type='submit' 
       onClick={formik.handleSubmit} className='btn bg-main text-white'>Register</button> : <button type='button' className='btn text-white bg-success'>
       <i className='fa-solid fa-circle-notch fa-spin'></i></button>}
-
       <p>If Tou Have Already Account..?<button type='button' className='btn' onClick={handleLogIn}>
         Log In Now. ?</button>
       </p>
-
-
     </form>
   </div>
-  )
+  </HelmetProvider>
+</>
 }

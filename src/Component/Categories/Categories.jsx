@@ -1,13 +1,16 @@
 import React from 'react'
-import { Helmet } from 'react-helmet'
+import { Helmet, HelmetProvider } from 'react-helmet-async';
+
 
 export default function Categories() {
-  return (
+  return <>
     <div>
-      <Helmet>
-        <title>Fresh Cart Categories</title>
-      </Helmet>
-      <h1>Categories</h1>
+      <HelmetProvider>
+        <Helmet>
+          <title>Fresh Cart Categories</title>
+        </Helmet>
+        <h1>Categories</h1>
+      </HelmetProvider>
     </div>
-  )
+    </>
 }
