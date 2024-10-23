@@ -22,6 +22,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import Profile from './Component/Profile/Profile';
 import CheckOut from './Component/CheckOut/CheckOut';
 import AllOrders from './Component/AllOrders/AllOrders';
+import SubCategory from './Component/SubCategory/SubCategory';
+import SpeBrand from './Component/SpeBrand/SpeBrand';
 
 
 export default function App() {
@@ -37,8 +39,10 @@ export default function App() {
         { path:'products' , element: <GuardRouting><Products/></GuardRouting>},
         { path:'productdetails/:id' , element: <GuardRouting><ProductDetails/></GuardRouting>},
         { path:'brands' , element: <GuardRouting><Brands/></GuardRouting>},
+        { path:'spebrand/:id' , element: <GuardRouting><SpeBrand/></GuardRouting>},
         { path:'wishlist' , element: <GuardRouting><Wishlist/></GuardRouting>},
         { path:'categories' , element: <GuardRouting><Categories/></GuardRouting>},
+        { path:'subcategory/:id' , element: <GuardRouting><SubCategory/></GuardRouting>},
         { path:'allorders' , element: <GuardRouting><AllOrders/></GuardRouting>},
         { path:'navbar' , element: <Navbar/>},
         { path:"*" , element: <NotFound/>},

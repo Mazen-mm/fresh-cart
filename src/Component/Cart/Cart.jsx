@@ -36,10 +36,9 @@ export default function Cart() {
       <Helmet>
         <title>Fresh Cart</title>
       </Helmet>
-      <div className="text-center mt-5"><h1>Cart</h1></div>
+      <div className="text-center text-main mt-5"><h1>Cart Details</h1></div>
       
       {cartDetails? <div className="w-75 mx-auto my-3 p-3 bg-main-light">
-        <h3 className='text-center'>Shop Cart :</h3>
         <h6 className='text-center text-main'>Cart Items : {cartDetails.numOfCartItems}</h6>
         {cartDetails.data.products.map( (el) => 
         <div key={el._id} className="row border-bottom align-items-center py-2 px-2">

@@ -48,9 +48,10 @@ export default function Products() {
   };
 
   let [page , setPage] = useState(1)
-  function getPageNumber (event){
-    let page = event.target.getAttribute('pagenum')
-    setPage(page)
+  // Function to update the page number
+  function getPageNumber(event) {
+    let selectedPage = event.target.getAttribute('pagenum');
+    setPage(selectedPage);
   }
 
   function getAllProducts (queryData) {
@@ -63,6 +64,17 @@ export default function Products() {
     // refetchInterval : 5000 ,
     // enabled : false 
   })
+
+  const [search, setSearch] = useState('');
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const filteredProducts = data?.data?.data.filter((product) => 
+    product.title.toLowerCase().includes(search.toLowerCase())
+  );
+
+  
   return <>
   <HelmetProvider>
     <Helmet>
@@ -71,44 +83,45 @@ export default function Products() {
     <div className="container">
       <div className="my-5">
         <nav className="navbar navbar-light bg-light w-75 mx-auto">
-          <input className="form-control me-2" type="search" placeholder="Search..." aria-label="Search"/>
+          <input className="form-control me-2" value={search} onChange={handleSearch} type="search"
+          placeholder="Search..." aria-label="Search"/>
         </nav>
       </div>
       {isLoading ? <div className='loading bg-white position-fixed d-flex align-items-center justify-content-center top-0 bottom-0 start-0 end-0'>
         <span className="loader"></span>
       </div> :
       <div className='container my-5'>
-        <div className='row'>
-          {data?.data.data.map( (element) => {
-            return <div key={element.id} className='col-md-3 product position-relative'>
-              <Link to={`/productdetails/${element.id}`}>
-                <img className='w-100' src={element.imageCover} alt="" />
-                <h6 className='text-main mt-2'>{element.category.name}</h6>
-                <h6>{element.title.split(' ').slice(0,2).join(' ')}</h6>
-                <div className='d-flex justify-content-between'>
-                  <span>{element.price}EGP</span>
-                  <span>{element.ratingsAverage}<i className='fa-solid fa-star rating-color'></i></span>
-                </div>
-              </Link>
-              <i onClick={()=> addProductToWish(element.id)}
-              className='fa-regular fa-heart fa-2x position-absolute text-danger top-0 end-0 m-2'></i>
-            <button onClick={()=> addProductToCart(element.id)} className='btn bg-main text-white w-100'>Add Product</button>
+        <div className='row g-4'>
+          {filteredProducts?.map( (element) => {
+            return <div key={element.id} className='col-md-3'>
+              <div className="product position-relative p-2">
+                <Link to={`/productdetails/${element.id}`}>
+                  <img className='w-100' src={element.imageCover} alt="" />
+                  <h6 className='text-main mt-2'>{element.category.name}</h6>
+                  <h6>{element.title.split(' ').slice(0,2).join(' ')}</h6>
+                  <div className='d-flex justify-content-between'>
+                    <span>{element.price}EGP</span>
+                    <span>{element.ratingsAverage}<i className='fa-solid fa-star rating-color'></i></span>
+                  </div>
+                </Link>
+                <i onClick={()=> addProductToWish(element.id)}
+                className='fa-regular fa-heart fa-2x position-absolute text-danger top-0 end-0 m-2'></i>
+                <button onClick={()=> addProductToCart(element.id)} className='btn bg-main text-white w-100'>Add Product</button>
+              </div>
           </div>
           }
         )}
     </div>
-    <nav aria-label="Page navigation example">
-      <ul className="pagination justify-content-center my-5">
-        <li className="page-item">
-          <Link className="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></Link>
-        </li>
-        <li className="page-item cursor-pointer"><Link className="page-link" pagenum='1' onClick={getPageNumber} >1</Link></li>
-        <li className="page-item cursor-pointer"><Link className="page-link" pagenum='2' onClick={getPageNumber} >2</Link></li>
-        <li className="page-item">
-          <Link className="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></Link>
-        </li>
-      </ul>
-    </nav>
+        {/* Pagination: Assuming you have multiple pages */}
+        <div className="pagination-controls text-center my-5">
+          <button className='btn btn-secondary' onClick={getPageNumber} pagenum={page - 1} disabled={page <= 1}>
+            Previous
+          </button>
+          <span className='mx-2'>Page {page}</span>
+          <button className='btn btn-secondary' onClick={getPageNumber} pagenum={Number(page) + 1}>
+            Next
+          </button>
+        </div>
   </div>
   }
     </div>

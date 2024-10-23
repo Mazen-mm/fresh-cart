@@ -49,22 +49,21 @@ export default function Wishlist() {
       <Helmet>
         <title>Fresh Cart Wish List</title>
       </Helmet>
-      <div className="text-center mt-5"><h1>Wish List</h1></div>
-
+      <div className="text-center text-main mt-5"><h1>Wish List</h1></div>
       {wishDetails? <div className="w-75 mx-auto my-3 p-3 bg-main-light">
-        <h6 className='text-center text-main'>WishList Items : {wishDetails.count}</h6>
+        <h5 className='text-center'>Favourite Items : {wishDetails.count}</h5>
         {wishDetails?.data?.map( (el) => 
         <div key={el._id} className="row border-bottom align-items-center py-2 px-2">
           <div className="col-md-2"><img className='w-100 ' src={el.imageCover} alt="" />
           </div>
           <div className="col-md-10">
             <div className="d-flex justify-content-between">
-              <div>
+              <div className='col-md-9'>
                 <h6>{el.title}</h6>
                 <h6 className='text-muted'>Price : {el.price} EGP</h6>
               </div>
-              <div>
-                <button onClick={()=> addProductToCart(el.id)} className='btn btn-success btn-sm p-2'>Add To Cart</button>
+              <div className='col-md-2'>
+                <button onClick={()=> addProductToCart(el.id)} className='btn bg-main text-white btn-sm p-2'>Add To Cart</button>
               </div>
             </div>
             <button onClick={()=> removeWish(el?._id)} className='btn'>

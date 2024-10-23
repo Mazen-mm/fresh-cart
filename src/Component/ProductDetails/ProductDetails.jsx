@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom'
-import OwlCarousel from 'react-owl-carousel';
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import 'owl.carousel/dist/assets/owl.theme.default.css';
 import { useContext } from 'react';
 import { cartContext } from '../../Context/cartContext';
-import Swal from 'sweetalert2';
 import { Helmet , HelmetProvider } from 'react-helmet-async';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Swal from 'sweetalert2';
 
 export default function ProductDetails() {
   let {addToCart , setNumOfCartItems} = useContext(cartContext);
@@ -36,33 +36,34 @@ export default function ProductDetails() {
     enabled : !!params.id
   });
 
-  console.error = (function(error) {
-    return function(...args) {
-      if (typeof args[0] === 'string' && args[0].includes('UNSAFE_componentWillReceiveProps')) {
-        return;
-      }
-      error.apply(console, args);
-    };
-  })(console.error);
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 2000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows : false ,
+    autoplaySpeed : 2000 ,
+    autoplay : true
+  };
 
   return <>
   <HelmetProvider>
-  {data?.data.data ? <div className="row align-items-center">
     <Helmet>
       <title>{data?.data.data.title}</title>
     </Helmet>
-    <h1 className='text-center mt-5'>Product Details</h1>
-    <h4 className='text-center px-5 text-black'><i className="fa-solid fa-ellipsis fa-2xl"></i></h4>
+    {data?.data.data ? <div className="row mb-5 d-flex justify-content-center align-items-center">
+    <h1 className='text-center text-main mt-5'>Product Details</h1>
     <div className="col-md-4">
-        <OwlCarousel className='owl-theme' items={1} autoplay autoplayTimeout={10000}>
+        <Slider {...settings}>
           {data?.data.data.images.map((image , index) => (
             <div className='item' key={index}>
               <img className='w-100' src={image} alt={data?.data.data.title} />
             </div>
           ))}
-        </OwlCarousel>
+        </Slider>
     </div>
-    <div className="col-md-8">
+    <div className="col-md-7">
       <h2 className='h5'>{data?.data.data.title}</h2>
       <p>{data?.data.data.descrption}</p>
       <h6 className='text-main'>{data?.data.data.category?.name}</h6>
@@ -71,7 +72,7 @@ export default function ProductDetails() {
         <span>Rating Quantity : {data?.data.data.ratingsQuantity}</span>
         <span><i className='fas fa-star rating-color'></i>{data?.data.data.ratingsAverage}</span>
       </div>
-      <button onClick={ ()=> addCart(params.id)} className='btn bg-main text-white w-100 mt-3'>Add To Cart</button>
+      <button onClick={ ()=> addCart(params.id)} className='btn bg-main text-white w-50 mt-3'>Add To Cart</button>
     </div>
   </div> : ''}
   </HelmetProvider>

@@ -2,11 +2,13 @@ import axios from "axios";
 import { createContext, useState } from "react";
 
 export let cartContext = createContext();
-
 export function CartContextProvider (props) {
   let [numOfCartItems , setNumOfCartItems] = useState();
+
   ///////// Wish State ///////////
   let [numOfWishItems , setNumOfWishItems] = useState();
+  ///////// Wish State ///////////
+
   let head = { token:localStorage.getItem('userToken') };
 
   function addToCart (id) {
@@ -37,7 +39,6 @@ export function CartContextProvider (props) {
       }
     }
     let body = { shippingAddress : data };
-    // let head = { token:  };
     return axios.post(`https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${id}?url=http://localhost:3000` , body , options)
   }
 
@@ -56,10 +57,17 @@ export function CartContextProvider (props) {
     ).then( (response) => response ).catch((error) => error);
   }
 
+////////// Orders Function //////////
+function getUserOrders() {
+  return axios.get('https://ecommerce.routemisr.com/api/v1/orders' , {
+    headers: head
+  }).then( (response) => response).catch((error) => error);
+}
+
   return <cartContext.Provider value={{ addToCart , numOfCartItems , setNumOfCartItems , getLoggedUserCart ,
   removeCartItem , clearAllCart , updateProductQuantity , checkOutPayment ,
   //////// Wish /////////
-  addToWish , numOfWishItems , setNumOfWishItems , getLoggedUserWish , removeWishItem }}>
+  addToWish , numOfWishItems , setNumOfWishItems , getLoggedUserWish , removeWishItem , getUserOrders}}>
     {props.children}
   </cartContext.Provider>
 }

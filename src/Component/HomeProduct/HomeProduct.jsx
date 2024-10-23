@@ -47,9 +47,10 @@ export default function HomeProduct () {
   };
 
   let [page , setPage] = useState(1)
-  function getPageNumber (event){
-    let page = event.target.getAttribute('pagenum')
-    setPage(page)
+  // Function to update the page number
+  function getPageNumber(event) {
+    let selectedPage = event.target.getAttribute('pagenum');
+    setPage(selectedPage);
   }
 
   function getProducts (queryData) {
@@ -68,40 +69,39 @@ export default function HomeProduct () {
       <span className="loader"></span>
     </div> :
     <div className='container my-5 m-auto'>
-      <h2 className='text-center mb-3'>All Products</h2>
-      <h4 className='text-center px-5 text-black'><i className="fa-solid fa-ellipsis fa-2xl"></i></h4>
-      <div className='row g-3'>
+      <h2 className='text-center text-main mb-5'>All Products</h2>
+      <div className='row d-flex justify-content-between g-0'>
         {data?.data.data.map( (element) => {
-          return <div key={element.id} className='col-md-2 product position-relative'>
-            <Link to={`/productdetails/${element.id}`}>
-              <img className='w-100' src={element.imageCover} alt="" />
-              <h6 className='text-main mt-2'>{element.category.name}</h6>
-              <h6>{element.title.split(' ').slice(0,2).join(' ')}</h6>
-              <div className='d-flex justify-content-between'>
-                <span>{element.price}EGP</span>
-                <span>{element.ratingsAverage}<i className='fa-solid fa-star rating-color'></i></span>
-              </div>
-            </Link>
-          <i onClick={()=> addProductToWish(element.id)}
-            className='fa-regular fa-heart fa-2x position-absolute text-danger top-0 end-0 m-2'></i>
-          <button onClick={()=> addProductToCart(element.id)} className='btn bg-main text-white w-100'>Add Product</button>
+          return <div key={element.id} className='col-md-2 m-1'>
+            <div className="product position-relative p-1">
+              <Link to={`/productdetails/${element.id}`}>
+                <img className='w-100' src={element.imageCover} alt="" />
+                <h6 className='text-main mt-2'>{element.category.name}</h6>
+                <h6>{element.title.split(' ').slice(0,2).join(' ')}</h6>
+                <div className='d-flex justify-content-between'>
+                  <span>{element.price}EGP</span>
+                  <span>{element.ratingsAverage}<i className='fa-solid fa-star rating-color'></i></span>
+                </div>
+              </Link>
+              <i onClick={()=> addProductToWish(element.id)}
+              className='fa-regular fa-heart fa-2x position-absolute text-danger top-0 end-0 m-2'></i>
+              <button onClick={()=> addProductToCart(element.id)} className='btn bg-main text-white w-100'>Add Product</button>
+            </div>
+          </div>
+          }
+        )}
+      </div>
+        {/* Pagination: Assuming you have multiple pages */}
+        <div className="pagination-controls text-center my-5">
+          <button className='btn btn-secondary' onClick={getPageNumber} pagenum={page - 1} disabled={page <= 1}>
+            Previous
+          </button>
+          <span className='mx-2'>Page {page}</span>
+          <button className='btn btn-secondary' onClick={getPageNumber} pagenum={Number(page) + 1}>
+            Next
+          </button>
         </div>
-      }
-      )}
     </div>
-    <nav aria-label="Page navigation example">
-      <ul className="pagination justify-content-center my-5">
-        <li className="page-item">
-          <Link className="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></Link>
-        </li>
-        <li className="page-item cursor-pointer"><Link className="page-link" pagenum='1' onClick={getPageNumber} >1</Link></li>
-        <li className="page-item cursor-pointer"><Link className="page-link" pagenum='2' onClick={getPageNumber} >2</Link></li>
-        <li className="page-item">
-          <Link className="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></Link>
-        </li>
-      </ul>
-    </nav>
-  </div>
   }
   </>
 }
