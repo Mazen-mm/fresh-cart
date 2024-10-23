@@ -41,7 +41,6 @@ export default function AllOrders() {
               <div className="col-md-6">
                 <h6><strong>Total Price:</strong> {order.totalOrderPrice} EGP</h6>
                 <h6><strong>Payment Method:</strong> {order.paymentMethodType}</h6>
-                <h6><strong>Payment Method:</strong> {order.paymentMethodType}</h6>
                 {order.shippingAddress && (
                   <>
                     <h6><strong>Shipping Address:</strong></h6>
