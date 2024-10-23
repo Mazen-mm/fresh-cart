@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 
 export default function ProductDetails() {
   let {addToCart , setNumOfCartItems} = useContext(cartContext);
+////// Function to add product to cart //////
   async function addCart (id) {
     let req = await addToCart(id).catch( (error) => {
       Swal.fire({
@@ -20,6 +21,7 @@ export default function ProductDetails() {
         footer: '<a href="#">Why do I have this issue?</a>'
       });
     })
+////// Sweetalert library if product added to cart successfully ? set the number of cart items //////
     if (req.data.status === 'success') {
       Swal.fire({
         title: "Good job!",
@@ -29,13 +31,15 @@ export default function ProductDetails() {
       setNumOfCartItems(req.data.numOfCartItems)
     }
   }
-  let params = useParams ();
+let params = useParams ();
+////// Function to get product details //////
   function getProductDetails (id) {
-    return axios.get(`https://ecommerce.routemisr.com/api/v1/products/${id}`) }
+    return axios.get(`https://ecommerce.routemisr.com/api/v1/products/${id}`) 
+  }
   let { data } = useQuery(['prodductDetails' , params.id] , () => getProductDetails (params.id) , {
     enabled : !!params.id
   });
-
+////// React Slider to scroll and show the images of product //////
   const settings = {
     dots: true,
     infinite: true,
@@ -49,12 +53,15 @@ export default function ProductDetails() {
 
   return <>
   <HelmetProvider>
+    {/* /////// Helmet contains informations about Component /////// */}
     <Helmet>
       <title>{data?.data.data.title}</title>
     </Helmet>
+    {/* /////// Display the product details /////// */}
     {data?.data.data ? <div className="row mb-5 d-flex justify-content-center align-items-center">
     <h1 className='text-center text-main mt-5'>Product Details</h1>
     <div className="col-md-4">
+        {/* ////// Slider to scroll and show the images of product ////// */}
         <Slider {...settings}>
           {data?.data.data.images.map((image , index) => (
             <div className='item' key={index}>
@@ -63,6 +70,7 @@ export default function ProductDetails() {
           ))}
         </Slider>
     </div>
+    {/* ///// Product Details information ///// */}
     <div className="col-md-7">
       <h2 className='h5'>{data?.data.data.title}</h2>
       <p>{data?.data.data.descrption}</p>
@@ -72,6 +80,7 @@ export default function ProductDetails() {
         <span>Rating Quantity : {data?.data.data.ratingsQuantity}</span>
         <span><i className='fas fa-star rating-color'></i>{data?.data.data.ratingsAverage}</span>
       </div>
+      {/* ////// button to add product to cart ////// */}
       <button onClick={ ()=> addCart(params.id)} className='btn bg-main text-white w-50 mt-3'>Add To Cart</button>
     </div>
   </div> : ''}

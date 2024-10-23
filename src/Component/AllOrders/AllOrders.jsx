@@ -11,7 +11,7 @@ export default function AllOrders() {
     let selectedPage = event.target.getAttribute('pagenum');
     setPage(selectedPage);
   }
-//////////////////
+///////// Function to get All Orders /////////
   function getOrders (queryData) {
     return axios.get(`https://ecommerce.routemisr.com/api/v1/orders/?page=${queryData.queryKey[1]}`)
   }
@@ -19,15 +19,18 @@ export default function AllOrders() {
   
   return <>
   <HelmetProvider>
+    {/* /////// Helmet to contain Component Informations /////// */}
     <Helmet>
       <title>Fresh Cart Orders</title>
     </Helmet>
     <div className="container my-5">
     <h1 className='text-center text-main'>All Orders</h1>
+      {/* /////// Display Orders /////// */}
       <div className="row d-flex justify-content-between mx-auto my-3 p-3 bg-main-light">
         {data?.data?.data.map( (order) => 
           <div key={order._id} className="border-bottom border-top align-items-center my-5 py-5">
             <div className="row my-2">
+              {/* /////// User Information /////// */}
               <div className="col-md-6">
               {order.user && (
                 <>
@@ -38,6 +41,7 @@ export default function AllOrders() {
                 </>
               )}
               </div>
+              {/* /////// Order Details /////// */}
               <div className="col-md-6">
                 <h6><strong>Total Price:</strong> {order.totalOrderPrice} EGP</h6>
                 <h6><strong>Payment Method:</strong> {order.paymentMethodType}</h6>
@@ -56,6 +60,7 @@ export default function AllOrders() {
               <div className="col-md-2">
                 <h6 className='text-main'><strong>Cart Items:</strong></h6>
               </div>
+            {/* Cart Details */}
               <div className="col-md-10">
                 <div className="row">
                 {order.cartItems && (

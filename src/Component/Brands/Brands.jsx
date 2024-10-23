@@ -11,6 +11,7 @@ export default function Brands() {
     let selectedPage = event.target.getAttribute('pagenum');
     setPage(selectedPage);
   }
+  /////// Function to get all Brands ////////
   function getAllBrands (queryData) {
     return axios.get(`https://ecommerce.routemisr.com/api/v1/brands/?page=${queryData.queryKey[1]}`)
   }
@@ -18,15 +19,18 @@ export default function Brands() {
   
   return <>
   <HelmetProvider>
+    {/* /////// Helmet contains informations about Component /////// */}
     <Helmet>
       <title>Fresh Cart Brands</title>
     </Helmet>
     <div>
     <h1 className='text-main text-center my-5'>All Brands</h1>
       <div className='row my-5 g-3'>
+        {/* ////// All Brands /////// */}
         {data?.data?.data.map( (element) => {
           return <div key={element._id} className='col-md-3'>
             <div className="card product position-relative">
+              {/* /////// Link to specific Brand //////// */}
               <Link to={`/spebrand/${element._id}`}>
                 <img className='w-100' src={element.image} alt=""/>
                 <h4 className='text-center fw-bolder my-4'>{element.name}</h4>

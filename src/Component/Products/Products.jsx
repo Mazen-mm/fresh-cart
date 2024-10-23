@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 export default function Products() {
   let {addToCart , setNumOfCartItems , addToWish , setNumOfWishItems} = useContext(cartContext);
-
+////// Function to add product to wish list //////
   async function addProductToWish (id) {
     let req = await addToWish(id).catch( (error) => {
       Swal.fire({
@@ -27,7 +27,7 @@ export default function Products() {
       });
     }
   };
-
+////// Function to add product to Cart //////
   async function addProductToCart (id) {
     let req = await addToCart(id).catch( (error) => {
       Swal.fire({
@@ -53,7 +53,7 @@ export default function Products() {
     let selectedPage = event.target.getAttribute('pagenum');
     setPage(selectedPage);
   }
-
+////// Function to get All Products ///////
   function getAllProducts (queryData) {
     return axios.get(`https://ecommerce.routemisr.com/api/v1/Products/?page=${queryData.queryKey[1]}`)
   }
@@ -64,12 +64,12 @@ export default function Products() {
     // refetchInterval : 5000 ,
     // enabled : false 
   })
-
+///// Handle Search input //////
   const [search, setSearch] = useState('');
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
-
+///// Filter Products in search input and display only matches words //////
   const filteredProducts = data?.data?.data.filter((product) => 
     product.title.toLowerCase().includes(search.toLowerCase())
   );
@@ -77,24 +77,29 @@ export default function Products() {
   
   return <>
   <HelmetProvider>
+    {/* /////// Helmet contains informations about Component /////// */}
     <Helmet>
       <title>Fresh Cart Products</title>
     </Helmet>
     <div className="container">
       <div className="my-5">
+        {/* ///// Search input ///// */}
         <nav className="navbar navbar-light bg-light w-75 mx-auto">
           <input className="form-control me-2" value={search} onChange={handleSearch} type="search"
           placeholder="Search..." aria-label="Search"/>
         </nav>
       </div>
+      {/* ///// Loading until products comes from DataBase ///// */}
       {isLoading ? <div className='loading bg-white position-fixed d-flex align-items-center justify-content-center top-0 bottom-0 start-0 end-0'>
         <span className="loader"></span>
       </div> :
       <div className='container my-5'>
         <div className='row g-4'>
+          {/* //// Display Filtered Products //// */}
           {filteredProducts?.map( (element) => {
             return <div key={element.id} className='col-md-3'>
               <div className="product position-relative p-2">
+                {/* //// Link to Product Details //// */}
                 <Link to={`/productdetails/${element.id}`}>
                   <img className='w-100' src={element.imageCover} alt="" />
                   <h6 className='text-main mt-2'>{element.category.name}</h6>
@@ -104,8 +109,10 @@ export default function Products() {
                     <span>{element.ratingsAverage}<i className='fa-solid fa-star rating-color'></i></span>
                   </div>
                 </Link>
+                {/* //// button to add to wish list //// */}
                 <i onClick={()=> addProductToWish(element.id)}
                 className='fa-regular fa-heart fa-2x position-absolute text-danger top-0 end-0 m-2'></i>
+                {/* //// button to add to Cart //// */}
                 <button onClick={()=> addProductToCart(element.id)} className='btn bg-main text-white w-100'>Add Product</button>
               </div>
           </div>

@@ -56,6 +56,7 @@ export default function App() {
   ])
   return <>
     <QueryClientProvider client={QueryClients}>
+      {/* //// Cart context provider to share cart data on all component //// */}
       <CartContextProvider>
         <UserContextProvider>
           <RouterProvider router={Routes}></RouterProvider>
