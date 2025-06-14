@@ -37,8 +37,9 @@ export function CartContextProvider (props) {
     ).then( (response) => response ).catch( (error) => error);
   }
   ///// Function Clear Cart /////
-  function clearAllCart () {
-    return axios.delete('https://ecommerce.routemisr.com/api/v1/cart' , { headers : head } )
+  async function clearAllCart () {
+    // const res = await axios.delete('https://ecommerce.routemisr.com/api/v1/cart' , { headers : head } 
+    // ).then( (res) => res ).catch( (error) => error );
   }
   ///// Function go to CheckOut Payment link /////
   function checkOutPayment (id , data) {

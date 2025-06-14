@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
-import Navbar from '../Navbar/Navbar'
-import Footer from '../Footer/Footer'
+import Navbar from '../Statics/Navbar/Navbar'
+import Footer from '../Statics/Footer/Footer'
 import { UserContext } from '../../Context/userContext'
 import { Offline } from "react-detect-offline";
 import { cartContext } from '../../Context/cartContext'

@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 export default function Cart() {
   let [cartDetails , setCartDetails] = useState();
-  let {getLoggedUserCart , removeCartItem , updateProductQuantity , setNumOfCartItems} = useContext(cartContext);
+  let {getLoggedUserCart , removeCartItem , updateProductQuantity , setNumOfCartItems , clearAllCart} = useContext(cartContext);
 
   useEffect( () => {
     getUserCart();
@@ -71,10 +71,17 @@ export default function Cart() {
         </div>
         )}
         <div>
-          <div className="row">
-            <h6 className='my-3 text-main'>Total Price : {cartDetails.data.totalCartPrice} EGP</h6>
-            {/* ///// Button to navigate to Checkout Component ////// */}
-            <NavLink to={'/checkout/'+cartDetails.data._id} className='btn w-25 btn-success'>Check Out Payment ?</NavLink>
+          <div className="row d-flex justify-content-between">
+            <div className="col-md-8">
+              <h6 className='my-3 text-main'>Total Price : {cartDetails.data.totalCartPrice} EGP</h6>
+              {/* ///// Button to navigate to Checkout Component ////// */}
+              <NavLink to={'/checkout/'+cartDetails.data._id} className='btn w-50 btn-success'>
+                Check Out Payment ?</NavLink>
+            </div>
+            <div className="col-md-3 my-3 d-flex align-items-center">
+              {/* /////// button to Clear Cart //////// */}
+              <button onClick={()=> clearAllCart()} className='mx-auto w-75 p-2 btn btn-danger'>Clear Cart</button>
+            </div>
           </div>
         </div>
       </div> : 

@@ -5,7 +5,7 @@ export let UserContext = createContext();
 
 export function UserContextProvider ({children}) {
   let [userToken , setToken] = useState(null);
-  let [userData , setUserData] = useState(null);
+  let [userData , setUserData] = useState('');
   let data = null
   if (userToken != null) {
     data = jwtDecode (userToken)
