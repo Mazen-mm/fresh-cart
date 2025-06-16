@@ -1,4 +1,4 @@
-import { RouterProvider , createBrowserRouter } from 'react-router-dom'
+import { RouterProvider , createHashRouter } from 'react-router-dom'
 import Layout from './Component/Layout/Layout';
 import Home from './Component/Features/Home/Home'
 import HomeProduct from './Component/Features/Home/HomeProduct/HomeProduct';
@@ -28,7 +28,7 @@ import SpeBrand from './Component/Features/Brands/SpeBrand/SpeBrand';
 
 export default function App() {
   let QueryClients = new QueryClient()
-  let Routes = createBrowserRouter([
+  let Routes = createHashRouter([
     {
       path:'/', element:<Layout/>, children:[
         { index: true , element: <GuardRouting><Home/></GuardRouting>},
